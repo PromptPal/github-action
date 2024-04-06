@@ -26,11 +26,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
+          cache: pnpm
 
-      - name: Install Dependencies
-        id: npm-ci
-        run: npm ci
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8
+
+      # - name: Build dist/ Directory
+      #   id: build
+      #   run: pnpm i
 
       - name: Check Format
         id: npm-format-check
@@ -57,8 +62,9 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          command: 'pp --help'
 
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+      # - name: Print Output
+      #   id: output
+      #   run: echo "${{ steps.test-action.outputs.time }}"

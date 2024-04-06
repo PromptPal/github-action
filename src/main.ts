@@ -103,7 +103,7 @@ export async function run(): Promise<void> {
       return
     }
 
-    core.debug(`found asset: ${cmdAsset}`)
+    core.debug(`found asset: \n${JSON.stringify(cmdAsset, null, '  ')}\n`)
 
     const downloadedFileStream = fs.createWriteStream(cmdAsset.name)
     const { body: cmdAssetBody } = await fetch(cmdAsset.browser_download_url)
@@ -114,7 +114,7 @@ export async function run(): Promise<void> {
     )
 
     const isZip = cmdAsset.content_type.includes('application/zip')
-    core.debug(`${cmdAsset.name}: ${isZip}`)
+    core.debug(`${cmdAsset.name} is Zip?: ${isZip}`)
 
     if (isZip) {
       const zip = fs
@@ -142,7 +142,13 @@ export async function run(): Promise<void> {
 
     const val = await execPromise(`./${command}`)
 
-    core.info(`\n${val.stdout}`)
+    if (val.stdout) {
+      core.info(`\n${val.stdout}`)
+    }
+
+    if (val.stderr) {
+      core.error(`\n${val.stderr}`)
+    }
 
     await fsPromises.unlink(cmdAsset.name)
 

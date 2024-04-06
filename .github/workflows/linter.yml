@@ -25,17 +25,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8
       - name: Setup Node.js
         id: setup-node
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
           cache: pnpm
-
-      - uses: pnpm/action-setup@v3
-        name: Install pnpm
-        with:
-          version: 8
 
       - name: Install Dependencies
         id: install

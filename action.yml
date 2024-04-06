@@ -1,11 +1,11 @@
 name: 'PromptPal Action'
-description: 'PromptPal cli'
+description: 'PromptPal Action that can generate typescript and go types from PromptPal schema'
 author: 'AnnatarHe'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
   icon: 'heart'
-  color: 'red'
+  color: 'blue'
 
 # Define your inputs here.
 inputs:

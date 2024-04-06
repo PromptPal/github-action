@@ -1,6 +1,6 @@
 # PromptPal/github-action
 
-integrate this Github Action to simplify your CI experience
+integrate this GitHub Action to simplify your CI experience
 
 > [!IMPORTANT]
 > Please make sure you already have a valid `promptpal.yml` config file
@@ -31,6 +31,6 @@ jobs:
 
 | variable | type   | note                                                                                                               | example              |
 |----------|--------|--------------------------------------------------------------------------------------------------------------------|----------------------|
-| token    | string | github personal token                                                                                              | secrets.GITHUB_TOKEN |
-| command  | string | PromptPal commands. we use `pp` to present `promptpal`.  full documetion is here: https://github.com/PromptPal/cli | - pp init - pp g     |
+| token    | string | GitHub personal token                                                                                              | secrets.GITHUB_TOKEN |
+| command  | string | PromptPal commands. we use `pp` to present `promptpal`.  full documetion is here: <https://github.com/PromptPal/cli/> | - pp init<br/>- pp g     |
 |          |        |                                                                                                                    |                      |

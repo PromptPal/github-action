@@ -32,5 +32,5 @@ jobs:
 | variable | type   | note                                                                                                               | example              |
 |----------|--------|--------------------------------------------------------------------------------------------------------------------|----------------------|
 | token    | string | GitHub personal token                                                                                              | secrets.GITHUB_TOKEN |
-| command  | string | PromptPal commands. we use `pp` to present `promptpal`.  full documetion is here: https://github.com/PromptPal/cli | - pp init - pp g     |
+| command  | string | PromptPal commands. we use `pp` to present `promptpal`.  full documetion is here: <https://github.com/PromptPal/cli/> | - pp init<br/>- pp g     |
 |          |        |                                                                                                                    |                      |

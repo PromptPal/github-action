@@ -51,7 +51,13 @@ export async function run(): Promise<void> {
 
     core.info(`using PromptPal Latest release: ${latestRelease.tag_name}`)
 
-    const platform = process.platform
+    let platform = process.platform
+
+    if (!['darwin', 'linux'].includes(platform)) {
+      core.warning(`PromptPal: Unsupported platform: ${platform}`)
+      platform = 'linux'
+    }
+
     const cmdAsset = latestRelease.assets.find(
       x => x.name.includes('cli_') && x.name.toLowerCase().includes(platform)
     )
@@ -60,6 +66,8 @@ export async function run(): Promise<void> {
       core.setFailed('PromptPal: No asset found')
       return
     }
+
+    core.debug(`found asset: ${cmdAsset}`)
 
     const downloadedFileStream = fs.createWriteStream(cmdAsset.name)
     const { body: cmdAssetBody } = await fetch(cmdAsset.browser_download_url)
@@ -70,6 +78,7 @@ export async function run(): Promise<void> {
     )
 
     const isZip = cmdAsset.content_type.includes('application/zip')
+    core.debug(`${cmdAsset.name}: ${isZip}`)
 
     if (isZip) {
       const zip = fs

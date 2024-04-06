@@ -56717,18 +56717,24 @@ async function run() {
         }
         const latestRelease = releases[0];
         core.info(`using PromptPal Latest release: ${latestRelease.tag_name}`);
-        const platform = process.platform;
+        let platform = process.platform;
+        if (!['darwin', 'linux'].includes(platform)) {
+            core.warning(`PromptPal: Unsupported platform: ${platform}`);
+            platform = 'linux';
+        }
         const cmdAsset = latestRelease.assets.find(x => x.name.includes('cli_') && x.name.toLowerCase().includes(platform));
         if (!cmdAsset) {
             core.setFailed('PromptPal: No asset found');
             return;
         }
+        core.debug(`found asset: ${cmdAsset}`);
         const downloadedFileStream = fs_1.default.createWriteStream(cmdAsset.name);
         const { body: cmdAssetBody } = await fetch(cmdAsset.browser_download_url);
         await (0, promises_1.finished)(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         stream_1.default.Readable.fromWeb(cmdAssetBody).pipe(downloadedFileStream));
         const isZip = cmdAsset.content_type.includes('application/zip');
+        core.debug(`${cmdAsset.name}: ${isZip}`);
         if (isZip) {
             const zip = fs_1.default
                 .createReadStream(cmdAsset.name)

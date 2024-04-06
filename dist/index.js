@@ -56762,14 +56762,14 @@ async function run() {
             core.setFailed('PromptPal: No asset found');
             return;
         }
-        core.debug(`found asset: ${cmdAsset}`);
+        core.debug(`found asset: \n${JSON.stringify(cmdAsset, null, '  ')}\n`);
         const downloadedFileStream = fs_1.default.createWriteStream(cmdAsset.name);
         const { body: cmdAssetBody } = await fetch(cmdAsset.browser_download_url);
         await (0, promises_1.finished)(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         stream_1.default.Readable.fromWeb(cmdAssetBody).pipe(downloadedFileStream));
         const isZip = cmdAsset.content_type.includes('application/zip');
-        core.debug(`${cmdAsset.name}: ${isZip}`);
+        core.debug(`${cmdAsset.name} is Zip?: ${isZip}`);
         if (isZip) {
             const zip = fs_1.default
                 .createReadStream(cmdAsset.name)
@@ -56795,7 +56795,12 @@ async function run() {
         await promises_2.default.rename('./promptpal', './pp');
         await promises_2.default.chmod('./pp', '755');
         const val = await execPromise(`./${command}`);
-        core.info(`\n${val.stdout}`);
+        if (val.stdout) {
+            core.info(`\n${val.stdout}`);
+        }
+        if (val.stderr) {
+            core.error(`\n${val.stderr}`);
+        }
         await promises_2.default.unlink(cmdAsset.name);
         // Set outputs for other workflow steps to use
         // core.setOutput('time', new Date().toTimeString())

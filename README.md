@@ -17,7 +17,7 @@ on:
 jobs:
   container-job:
     steps:
-      - uses: PromptPal/github-action@v1.0.0
+      - uses: PromptPal/github-action@v1.0.2
         env:
           PROMPTPAL_ENDPOINT: ${{ secrets.PROMPTPAL_ENDPOINT }}
           PROMPTPAL_API_TOKEN: ${{ secrets.PROMPTPAL_API_TOKEN }}

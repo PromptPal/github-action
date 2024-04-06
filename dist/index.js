@@ -56718,11 +56718,46 @@ async function run() {
         const latestRelease = releases[0];
         core.info(`using PromptPal Latest release: ${latestRelease.tag_name}`);
         let platform = process.platform;
-        if (!['darwin', 'linux'].includes(platform)) {
+        let arch = process.arch;
+        if (!['darwin', 'linux', 'win'].includes(platform)) {
             core.warning(`PromptPal: Unsupported platform: ${platform}`);
             platform = 'linux';
         }
-        const cmdAsset = latestRelease.assets.find(x => x.name.includes('cli_') && x.name.toLowerCase().includes(platform));
+        if (platform.includes('win')) {
+            platform = 'windows';
+        }
+        if (!['x64', 'arm64', 'arm'].includes(arch)) {
+            core.warning(`PromptPal: Unsupported architecture: ${arch}`);
+            arch = 'x64';
+        }
+        let archExpr = arch;
+        if (platform === 'darwin') {
+            if (arch.includes('arm')) {
+                archExpr = 'arm';
+            }
+            else {
+                archExpr = 'amd';
+            }
+        }
+        if (platform === 'linux') {
+            if (arch.includes('arm')) {
+                archExpr = 'arm';
+            }
+            else {
+                archExpr = 'x86_64';
+            }
+        }
+        if (platform.includes('win')) {
+            if (arch.includes('arm')) {
+                archExpr = 'arm';
+            }
+            else {
+                archExpr = 'x86_64';
+            }
+        }
+        const cmdAsset = latestRelease.assets.find(x => x.name.includes('cli_') &&
+            x.name.toLowerCase().includes(platform) &&
+            x.name.toLowerCase().includes(archExpr));
         if (!cmdAsset) {
             core.setFailed('PromptPal: No asset found');
             return;
